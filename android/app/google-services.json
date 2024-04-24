@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "36799325304",
+    "project_id": "cms-app-1b11b",
+    "storage_bucket": "cms-app-1b11b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:36799325304:android:2f090e5be5b634eea4798d",
+        "android_client_info": {
+          "package_name": "com.example.cms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPsqD7lgJWP048GePK9k9V3sg5eVOrvvs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
