@@ -1,13 +1,9 @@
 import 'dart:io';
-
+import 'package:cms/dashboard.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-//import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:cms/features/app/splash_screen.dart';
 import 'package:cms/features/user_auth/presentation/pages/home_page.dart';
-
-//import 'package:cms/dashboard.dart';
 import 'package:cms/features/user_auth/presentation/pages/login_page.dart';
 import 'package:cms/features/user_auth/presentation/pages/sign_up_page.dart';
 import 'package:get/get.dart';
@@ -33,8 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'CONTRASAVE',
       routes: {
         '/': (context) => SplashScreen(
-              // Here, you can decide whether to show the LoginPage or HomePage based on user authentication
-              child: LoginPage(), //change back to login in case of failure
+              child: LoginPage(), 
             ),
         '/login': (context) => LoginPage(),
         '/signUp': (context) => SignUpPage(),

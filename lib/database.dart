@@ -1,8 +1,60 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
+import 'package:cms/reminder.dart';
 
 class DatabaseHelper {
+  get _databaseHelper => null;
+
+  Future<String> _retrieveContractInfoFromDatabase(String userQuery) async {
+    try {
+      String contractInfo = await _databaseHelper.getContractInfo(userQuery);
+      return contractInfo;
+    } catch (error) {
+      print("Error retrieving contract information from database: $error");
+      return 'Error: Unable to retrieve contract information';
+    }
+  }
+
+  Future<String> getContractInfo(String userQuery) async {
+    try {
+      // Implement logic to fetch contract information based on userQuery
+      List<Contract> contracts = await getAllContracts();
+
+      // Find the contract that matches the user's query
+      String contractInfo = '';
+      for (Contract contract in contracts) {
+        if (contract.contractName.toLowerCase() == userQuery.toLowerCase()) {
+          contractInfo = "Contract Name: ${contract.contractName}\n"
+                  "Party: ${contract.party}\n"
+              // Include other contract information as needed
+              ;
+          break;
+        }
+      }
+      return contractInfo;
+    } catch (error) {
+      print("Error fetching contract information: $error");
+      return 'Error: Unable to fetch contract information';
+    }
+  }
+
+  //Insterted this code for the reminder class.
+  Future<void> insertReminder(Reminder reminder) async {
+    final Database db = await database;
+    await db.insert(
+      'reminders',
+      reminder.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int?> getTotalContractsCount() async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> result = await db.query('contracts');
+    print('Total contracts count: ${result.length}');
+    return result.length;
+  }
+
   static Database? _database;
 
   Future<Database> get database async {
@@ -28,6 +80,7 @@ class DatabaseHelper {
             type TEXT,
             department TEXT,
             location TEXT,
+            value TEXT,
             effective_date INTEGER,
             expiry_date INTEGER
           )
@@ -66,6 +119,7 @@ class DatabaseHelper {
         location: maps[i]['location'],
         effectiveDate: maps[i]['effective_date'].toString(),
         expiryDate: maps[i]['expiry_date'].toString(),
+        contractNumber: maps[i]['contract_number'], // Added contractNumber
       );
     });
   }
@@ -78,6 +132,10 @@ class DatabaseHelper {
       whereArgs: [contractNumber],
     );
   }
+
+  getContractFromDatabase(String contractName) {}
+
+  //getTotalContractsCount() {}
 }
 
 class Contract {
@@ -99,7 +157,8 @@ class Contract {
     this.location,
     this.effectiveDate,
     this.expiryDate,
-  }) : contractNumber = DateTime.now().millisecondsSinceEpoch.toString();
+    required this.contractNumber, // Add contractNumber to the constructor
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -113,6 +172,4 @@ class Contract {
       'expiry_date': expiryDate,
     };
   }
-
-  void remove(Contract contract) {}
 }
